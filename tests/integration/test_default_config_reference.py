@@ -47,13 +47,13 @@ def test_default_config_run_matches_reference_summary(tmp_path):
             )
         return
 
-    assert DEFAULT_CONFIG_PATH.is_file(), (
-        "Missing default config fixture at tests/fixtures/default/config.json"
-    )
+    assert (
+        DEFAULT_CONFIG_PATH.is_file()
+    ), "Missing default config fixture at tests/fixtures/default/config.json"
     reference_summary_path = REFERENCE_RUN_DIR / "summary.json"
-    assert reference_summary_path.is_file(), (
-        "Missing reference summary at tests/fixtures/default/logs/runs/test/summary.json"
-    )
+    assert (
+        reference_summary_path.is_file()
+    ), "Missing reference summary at tests/fixtures/default/logs/runs/test/summary.json"
 
     run_base_dir = tmp_path / "runs"
     config = json.loads(DEFAULT_CONFIG_PATH.read_text())
