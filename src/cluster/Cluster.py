@@ -7,12 +7,11 @@
 #    files in the main directory
 # ===========================================================================
 
-import sys
+from datetime import datetime
 
 from cluster.WorkerNode import *
-from util import Logging
 from datalogger.DataLogger import DataLogger
-from datetime import datetime
+from util import Logging
 
 logger = Logging.get_logger()
 
