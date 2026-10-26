@@ -21,13 +21,14 @@
 # The main repository houses LICENSE and NOTICE files for your infromation
 # ========================================================================
 
-from simulation.Simulation import Simulation
-from cluster.ClusterLoader import load_cluster_inventory
-from util import Logging
 import argparse
 import json
-import os
 import logging
+import os
+
+from cluster.ClusterLoader import load_cluster_inventory
+from simulation.Simulation import Simulation
+from util import Logging
 
 logger = Logging.get_logger()
 

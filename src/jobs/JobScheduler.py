@@ -8,10 +8,10 @@
 # ===========================================================================
 
 from jobs.VOJobFactory import (
-    VOJobFactory,
-    GridPPJobFactory,
     ATLASJobFactory,
+    GridPPJobFactory,
     LHCbJobFactory,
+    VOJobFactory,
 )
 
 

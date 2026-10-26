@@ -8,6 +8,7 @@
 # ===========================================================================
 
 import random
+
 import numpy as np
 
 from jobs.Jobs import Job

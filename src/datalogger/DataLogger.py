@@ -7,9 +7,10 @@
 #    files in the main directory
 # ===========================================================================
 
-from util import Logging
 import json
 import os
+
+from util import Logging
 
 logger = Logging.get_logger()
 

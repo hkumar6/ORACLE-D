@@ -7,7 +7,8 @@
 #    files in the main directory
 # ===========================================================================
 
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
+
 from util import Logging
 
 logger = Logging.get_logger()
