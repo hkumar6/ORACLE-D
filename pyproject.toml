@@ -36,3 +36,9 @@ namespaces = true
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "-ra"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
