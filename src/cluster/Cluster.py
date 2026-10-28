@@ -7,28 +7,46 @@
 #    files in the main directory 
 # ===========================================================================
 
-import sys
+from datetime import datetime
+from typing import Any
 
 from cluster.WorkerNode import *
+from simulation.Time import SimulationTime
 from util import Logging
-from datalogger.DataLogger import DataLogger
-from datetime import datetime
-
 
 logger = Logging.get_logger()
 
 
-class Cluster():
+class Cluster:
 
-    def __init__(self, config, simulation_time, worker_node_inventory, C_Intensity_data, esgimmick, C_Intensity_Threshold_Value = 200):
-        ''' Creates the cluster to be simulated. 
-        The first argument (simulation_time) is the common simulation time.  
-        The second argument (worker_node_inventory) a dictionary of {WorkerNode:int, ...} where user specifies node type that will become the class Workernode() and the number of those nodes.
-            I.e specs = {WorkerNode_d20:40, WorkerNode_d21:32, WorkerNode_d22:36}
-        The third argument (C_Intensity_data) is the list that contains the carbon intensity data.   
-        The fourth argument (esgimmick) is a string that represents the experiment you want to run with the cluster.
-        The fifth argument (C_Intensity_Threshold_Value) is the value of the carbon intensity you want the energy saving attempt to kick in   
-        '''
+    def __init__(
+            self,
+            config: dict,
+            simulation_time: 'SimulationTime',
+            worker_node_inventory: dict[str, int],
+            carbon_intensity_data: list[Any],
+            esgimmick: str,
+            carbon_intensity_threshold: int = 200
+    ):
+        """ Creates the cluster to be simulated.
+
+        Parameters
+        ----------
+        config : dict
+            The configuration of the cluster.
+        simulation_time : SimulationTime
+            The global simulation time.
+        worker_node_inventory : dict[WorkerNode,int]
+            Maps each WorkerNode template to the quantity of nodes to create,
+            e.g. ``{WorkerNode_d20: 40, WorkerNode_d21: 32, WorkerNode_d22: 36}``.
+        carbon_intensity_data : list
+            Contains the carbon intensity data.
+        esgimmick : str
+            Name of the experiment to run on the cluster.
+        carbon_intensity_threshold : int, optional
+            Carbon intensity threshold, in gCO2/kWh, above which the
+            energy-saving attempt is triggered. Defaults to ``200``.
+        """
         
         self._simulation_time = simulation_time
         self._worker_nodes = []
@@ -44,10 +62,10 @@ class Cluster():
         self._peaktime_energy_and_carbon_consumed_handler = None
         self._occupancy_handler = None
         
-        self._carbondata = C_Intensity_data
+        self._carbondata = carbon_intensity_data
         self._energy_saving_try = esgimmick
         self._cditerant = 0  # Create a iterant that marks place in the carbon data list w.r.t simulation time to be incrimented w.r.t the timestep of the simulation.
-        self._CIThresholdValue = C_Intensity_Threshold_Value
+        self._CIThresholdValue = carbon_intensity_threshold
         self._in_clkdown = False # Flags to make decisions based on the status of the cluster.
         self._anticipate_clkdown = False
         self._anticipate_clockup = False
@@ -189,9 +207,9 @@ class Cluster():
                 for worker_node in self._worker_nodes:
                     worker_node.clock_maximum()        
         
-        # Clocking down nodes when the next hh timesegment is forecast to have "high" or "very high" usage.
+        # Clocking down nodes when the next hh time segment is forecast to have "high" or "very high" usage.
         # A better and more reliable way is to dampen the transition by instead using the numerical equivalent of high which is 200 (g(C02)/kWh).
-        # and requiring the forecast usage to be 205 to switch into clockdown and 195 to switch out of it.
+        # and requiring the forecast usage to be 205 to switch into clock-down and 195 to switch out of it.
         # Even better yet, we can just a threshold that can be user generated.  
         if 'highforecast' in self._energy_saving_try:                 
             if self._anticipate_clkdown == True:
