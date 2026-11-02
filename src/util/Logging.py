@@ -22,7 +22,7 @@ def __get_fn_log(log_dir=None):
     dir_logs = os.path.join(os.getcwd(), 'logs')
     if not os.path.exists(dir_logs):
         os.mkdir(dir_logs)
-    tag = '{:%Y%m%d-%H%M}'.format(datetime.datetime.now())
+    tag = f'{datetime.datetime.now():%Y%m%d-%H%M}'
     return os.path.join(dir_logs, f'{tag}.log')
 
 
@@ -45,7 +45,7 @@ def create_run_directory(config):
     base_dir = output_cfg.get("log_dir", os.path.join(os.getcwd(), 'logs', 'runs'))
     os.makedirs(base_dir, exist_ok=True)
 
-    timestamp = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
+    timestamp = f'{datetime.datetime.now():%Y-%m-%d_%H-%M-%S}'
     run_label = output_cfg.get("run_label", _default_run_label(config))
     run_dir = os.path.join(base_dir, f'{timestamp}_{_slugify(run_label)}')
 

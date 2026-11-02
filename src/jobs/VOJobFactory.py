@@ -8,15 +8,15 @@
 # ===========================================================================
 
 import random
+
 import numpy as np
 
 from jobs.Jobs import Job
 from util import Logging
 
-
 logger = Logging.get_logger()
 
-class VOJobFactory():
+class VOJobFactory:
     
     def __init__(self, tag, RAM_per_core = 1, cores_req = None):
         self._tag = tag
@@ -28,15 +28,15 @@ class VOJobFactory():
     def __get_duration(self):
         # Calculate duration in minutes, output said duration in seconds. 
         # Create the standard here to be empty pilot jobs
-        durationmins = random.gauss(15,5) # ~15 mins for an empty pilot to run.    
-        if durationmins < 5: durationmins = 5
-        return durationmins * 60
+        duration_mins = random.gauss(15,5) # ~15 mins for an empty pilot to run.
+        duration_mins = max(duration_mins, 5)
+        return duration_mins * 60
 
     def __require_cores(self):
-        # Determine whether you are running a Single or multi-core job.
-        if self._cores_requested == None: 
+        # Determine whether you are running a Single or multicore job.
+        if self._cores_requested is None:
             core_num_seed = random.gauss(0,1)    
-            if core_num_seed < 0: self._cores_requested = 8 #Random 50% chance of requring 8 or 1 core.
+            if core_num_seed < 0: self._cores_requested = 8 #Random 50% chance of requiring 8 or 1 core.
             else                : self._cores_requested = 1
         return self._cores_requested
 
@@ -82,20 +82,19 @@ class ATLASJobFactory(VOJobFactory):
         # Calculate duration in minutes, output said duration in seconds.
         seed = int(600*random.random())
         if seed < 251: # empty pilot jobs
-            durationmins = random.gauss(15,5) # ~15 mins for an empty pilot to run. 
+            duration_mins = random.gauss(15,5) # ~15 mins for an empty pilot to run.
         else:
-            durationmins = random.gauss(300,100) # Average job length is about 5 hours.     
+            duration_mins = random.gauss(300,100) # Average job length is about 5 hours.
         
-        if durationmins < 5: 
-            durationmins = 5
-        return durationmins * 60
+        duration_mins = max(duration_mins, 5)
+        return duration_mins * 60
 
     def __require_cores(self):
-        # Determine whether you are running a Single or multi-core job.
-        if self._cores_requested == None: 
+        # Determine whether you are running a Single or multicore job.
+        if self._cores_requested is None:
             core_num_seed = random.randint(0,101)    
-            if core_num_seed < 80: self._cores_requested = 8 #80% chance of requring 8 cores.
-            else                 : self._cores_requested = 1 #20% chance of requring 1 core. 
+            if core_num_seed < 80: self._cores_requested = 8 #80% chance of requiring 8 cores.
+            else                 : self._cores_requested = 1 #20% chance of requiring 1 core.
         return self._cores_requested
 
     def create_job(self):
@@ -115,22 +114,21 @@ class LHCbJobFactory(VOJobFactory):
         # Calculate duration in minutes, output said duration in seconds. 
         seed = int(100*random.random())
         if seed < 22: # empty pilot jobs (21% of the time)
-            durationmins = random.gauss(15,5) # ~15 mins for an empty pilot to run. 
+            duration_mins = random.gauss(15,5) # ~15 mins for an empty pilot to run.
         else:
             #Creates a function that models the landau distribution of LHCb jobs but with ranges of 9.5 to 19.5.
-            jobdisthours = np.random.choice(np.arange(9.5, 19.5, 1), p=[1/90, 2.5/90, 21/90, 30/90, 15/90, 7.5/90, 7/90, 3/90, 2/90, 1/90]) # Average job length is about 12 hours. 
-            durationmins = 60 * jobdisthours
+            job_dist_hours = np.random.choice(np.arange(9.5, 19.5, 1), p=[1/90, 2.5/90, 21/90, 30/90, 15/90, 7.5/90, 7/90, 3/90, 2/90, 1/90]) # Average job length is about 12 hours.
+            duration_mins = 60 * job_dist_hours
 
-        if durationmins < 5: 
-            durationmins = 5
-        return durationmins * 60
+        duration_mins = max(duration_mins, 5)
+        return duration_mins * 60
 
     def __require_cores(self):
-        # Determine whether you are running a Single or multi-core job.
-        if self._cores_requested == None: 
+        # Determine whether you are running a Single or multicore job.
+        if self._cores_requested is None:
             core_num_seed = random.randint(0,101)    
-            if core_num_seed < 10: self._cores_requested = 8 #10% chance of requring 8 cores.
-            else                 : self._cores_requested = 1 #90% chance of requring 1 core. 
+            if core_num_seed < 10: self._cores_requested = 8 #10% chance of requiring 8 cores.
+            else                 : self._cores_requested = 1 #90% chance of requiring 1 core.
         return self._cores_requested
     
     def create_job(self):

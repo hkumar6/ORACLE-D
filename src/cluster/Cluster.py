@@ -251,6 +251,10 @@ class Cluster:
 
         #print(self._timestep_power_dissipated) #For debugging
         self._timestep_power_dissipated = 0 # Reset the accumulator every time-step
+
+    @property
+    def energy_saving_try(self):
+        return self._energy_saving_try
       
     
 

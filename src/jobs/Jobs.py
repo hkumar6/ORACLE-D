@@ -9,7 +9,8 @@
 
 import datetime
 
-class Job():
+
+class Job:
 
     def __init__(self, name, duration, memory_req = 1, cores_req = 1):
         self.name = name

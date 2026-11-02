@@ -7,13 +7,14 @@
 #    files in the main directory 
 # ===========================================================================
 
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
+
 from util import Logging
 
 logger = Logging.get_logger()
 
 
-class SimulationTime():
+class SimulationTime:
 
     def __init__(self, config_or_time, time = None):
         self._time = None

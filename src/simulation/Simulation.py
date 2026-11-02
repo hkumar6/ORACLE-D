@@ -8,8 +8,8 @@
 # ===========================================================================
 
 
-import sys
 import os
+import sys
 from datetime import datetime, timedelta
 
 from cluster.Cluster import Cluster
@@ -18,11 +18,10 @@ from jobs.JobScheduler import JobScheduler
 from simulation.Time import SimulationTime
 from util import Logging
 
-
 logger = Logging.get_logger()
 
 
-class Simulation():
+class Simulation:
 
     def __init__(self, config, inventory):
         
@@ -64,10 +63,10 @@ class Simulation():
                 if datarequired == True: #Import data when you have found that date you want.
                     if line[1] == '': # If there is data missing
                         print("You are missing forecast CI data for the time segment: " + line[0])
-                        sys.exit
+                        sys.exit()
                     if line[2] == '': # If there is data missing
                         print("You are missing actual CI data for the time segment: " + line[0])
-                        sys.exit
+                        sys.exit()
                     linesofimport.append(line)    
                     
         self._CIntendata = linesofimport
@@ -104,8 +103,8 @@ class Simulation():
             n = node(self._simulation_time)
             print(n.hostname + ': ' + str(cores) + ' ', end='')
         print()
-        print('Energy saving try: ' + self._cluster._energy_saving_try)
-        print('CIThresholdValue: ' + str(self.CIThresholdValue))
+        print(f'Energy saving try: {self._cluster.energy_saving_try}')
+        print(f'CIThresholdValue: {self.CIThresholdValue}')
         
         # Class to record statistics
         self._datalogger = DataLogger(config)
@@ -141,15 +140,15 @@ class Simulation():
                 for vo, jobs in vos.items():
                     print(vo + ': ' + str(jobs), end=' ')
                 print(' per ' + str(secs/3600) +  ' hours', end='')
-        print ()
+        print()
         
         if self._verbosity in ["low", "medium", "high"]:
             simulation_parameters = self._get_simulation_parameters(datapath, datafile)
             self._datalogger.set_simulation_parameters(simulation_parameters)
             simulation_parameters_text = self._format_simulation_parameters(simulation_parameters)
-            logger.info('Created simulation with parameters:\n%s', simulation_parameters_text)
+            logger.info(f'Created simulation with parameters:\n{simulation_parameters_text}')
             self._write_simulation_parameters(simulation_parameters_text)
-        print(f'Simulation Started. Good Luck')
+        print('Simulation Started. Good Luck')
 
 
     def _write_simulation_parameters(self, simulation_parameters):
@@ -262,10 +261,10 @@ class Simulation():
                 self._datalogger.print_summary(True, self._rundescript, self._peaktime_str, simtottime.total_seconds(), self._simulation_time.get_timestep(), realtottime.total_seconds())
                 
                 if self._verbosity in ["medium", "high"]:
-                    logger.info(f'No more jobs!')
+                    logger.info('No more jobs!')
                     logger.info(f'Ending simulation at {self._simulation_time.get_current_datetime()}')
-                print(f'Simulation Finished. Check logs directory for output')
-                sys.exit(0)
+                print('Simulation Finished. Check logs directory for output')
+                sys.exit()
             
             # Second end condition: When two weeks in simulation time has passed.
             if simtottime.total_seconds() >= self._simulation_length:
@@ -273,10 +272,10 @@ class Simulation():
                 self._datalogger.print_summary(True, self._rundescript, self._peaktime_str, simtottime.total_seconds(), self._simulation_time.get_timestep(), realtottime.total_seconds())
                 
                 if self._verbosity in ["medium", "high"]:
-                    logger.info(f'You have been running for a week! Time to stop')
+                    logger.info('You have been running for a week! Time to stop')
                     logger.info(f'Ending simulation at {self._simulation_time.get_current_datetime()}')
-                print(f'Simulation Finished. Check logs directory for output')
-                sys.exit(0)    
+                print('Simulation Finished. Check logs directory for output')
+                sys.exit()
 
             # Move forward in time
             self._simulation_time.advance() 
