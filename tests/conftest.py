@@ -16,8 +16,14 @@ def fixture_paths():
     return SimpleNamespace(
         carbon_dir=FIXTURES_DIR / "data" / "carbon_intensity",
         inventory_csv=FIXTURES_DIR / "data" / "cluster" / "minimal_inventory.csv",
-        frequency_csv=FIXTURES_DIR / "data" / "cluster" / "minimal_frequency_dependence.csv",
-        multifreq_frequency_csv=FIXTURES_DIR / "data" / "cluster" / "multifreq_frequency_dependence.csv",
+        frequency_csv=FIXTURES_DIR
+        / "data"
+        / "cluster"
+        / "minimal_frequency_dependence.csv",
+        multifreq_frequency_csv=FIXTURES_DIR
+        / "data"
+        / "cluster"
+        / "multifreq_frequency_dependence.csv",
     )
 
 
@@ -121,7 +127,11 @@ def completed_run(minimal_config):
         check=False,
     )
 
-    run_dirs = sorted(minimal_config.run_base_dir.iterdir()) if minimal_config.run_base_dir.exists() else []
+    run_dirs = (
+        sorted(minimal_config.run_base_dir.iterdir())
+        if minimal_config.run_base_dir.exists()
+        else []
+    )
     run_dir = run_dirs[0] if run_dirs else None
 
     return SimpleNamespace(

@@ -56,7 +56,9 @@ def test_load_cluster_inventory_respects_cluster_filter(fixture_paths):
     assert inventory == {}
 
 
-def test_load_cluster_inventory_strict_raises_on_malformed_frequency_entry(tmp_path, fixture_paths):
+def test_load_cluster_inventory_strict_raises_on_malformed_frequency_entry(
+    tmp_path, fixture_paths
+):
     frequency_csv = tmp_path / "frequency.csv"
     frequency_csv.write_text(
         FREQUENCY_HEADER + "test-node,TESTNODE,0,2024-01-01T00:00:00,3000_200\n"
@@ -71,10 +73,13 @@ def test_load_cluster_inventory_strict_raises_on_malformed_frequency_entry(tmp_p
         )
 
 
-def test_load_cluster_inventory_lenient_skips_malformed_frequency_entry(tmp_path, fixture_paths):
+def test_load_cluster_inventory_lenient_skips_malformed_frequency_entry(
+    tmp_path, fixture_paths
+):
     frequency_csv = tmp_path / "frequency.csv"
     frequency_csv.write_text(
-        FREQUENCY_HEADER + "test-node,TESTNODE,0,2024-01-01T00:00:00,3000_200,3000_200_1939.60\n"
+        FREQUENCY_HEADER
+        + "test-node,TESTNODE,0,2024-01-01T00:00:00,3000_200,3000_200_1939.60\n"
     )
 
     inventory = load_cluster_inventory(
@@ -101,10 +106,13 @@ def test_load_cluster_inventory_lenient_skips_malformed_frequency_entry(tmp_path
     assert worker_node.HEPScore_vs_frequency == [1939.60]
 
 
-def test_load_cluster_inventory_strict_raises_on_missing_frequency_data(tmp_path, fixture_paths):
+def test_load_cluster_inventory_strict_raises_on_missing_frequency_data(
+    tmp_path, fixture_paths
+):
     frequency_csv = tmp_path / "frequency.csv"
     frequency_csv.write_text(
-        FREQUENCY_HEADER + "other-node,OTHERNODE,0,2024-01-01T00:00:00,3000_200_1939.60\n"
+        FREQUENCY_HEADER
+        + "other-node,OTHERNODE,0,2024-01-01T00:00:00,3000_200_1939.60\n"
     )
 
     with pytest.raises(KeyError):
@@ -116,10 +124,13 @@ def test_load_cluster_inventory_strict_raises_on_missing_frequency_data(tmp_path
         )
 
 
-def test_load_cluster_inventory_lenient_skips_node_without_frequency_data(tmp_path, fixture_paths):
+def test_load_cluster_inventory_lenient_skips_node_without_frequency_data(
+    tmp_path, fixture_paths
+):
     frequency_csv = tmp_path / "frequency.csv"
     frequency_csv.write_text(
-        FREQUENCY_HEADER + "other-node,OTHERNODE,0,2024-01-01T00:00:00,3000_200_1939.60\n"
+        FREQUENCY_HEADER
+        + "other-node,OTHERNODE,0,2024-01-01T00:00:00,3000_200_1939.60\n"
     )
 
     inventory = load_cluster_inventory(
@@ -132,7 +143,9 @@ def test_load_cluster_inventory_lenient_skips_node_without_frequency_data(tmp_pa
     assert inventory == {}
 
 
-def test_load_cluster_inventory_strict_raises_on_invalid_numeric_inventory_value(tmp_path, fixture_paths):
+def test_load_cluster_inventory_strict_raises_on_invalid_numeric_inventory_value(
+    tmp_path, fixture_paths
+):
     inventory_csv = tmp_path / "inventory.csv"
     inventory_csv.write_text(
         INVENTORY_HEADER
@@ -149,7 +162,9 @@ def test_load_cluster_inventory_strict_raises_on_invalid_numeric_inventory_value
         )
 
 
-def test_load_cluster_inventory_lenient_skips_invalid_numeric_inventory_value(tmp_path, fixture_paths):
+def test_load_cluster_inventory_lenient_skips_invalid_numeric_inventory_value(
+    tmp_path, fixture_paths
+):
     inventory_csv = tmp_path / "inventory.csv"
     inventory_csv.write_text(
         INVENTORY_HEADER
