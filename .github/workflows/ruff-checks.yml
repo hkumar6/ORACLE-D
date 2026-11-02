@@ -1,4 +1,4 @@
-name: Python Formatting Test
+name: Code Quality
 
 on:
   push:
@@ -27,5 +27,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install ruff
 
-      - name: Run Ruff Check
-        uses: astral-sh/ruff-action@v4.1.0
+      - name: Ruff Linter
+        run: |
+          # linting check
+          ruff check .
+          # formatting check
+          ruff format --check .
